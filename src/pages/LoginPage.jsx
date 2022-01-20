@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 function LoginPage(){
 
@@ -10,6 +11,21 @@ function LoginPage(){
                 .then(users => setUsers(users))
 
         },[])
+
+    function setLoggedInUser(userInfo){
+        fetch("http://localhost:4000/loggedInUser",{
+            method:"PATCH",
+            headers:{
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                user: userInfo
+            })
+        })
+    }
+
+    const navigate = useNavigate()
+
     
     if(users){
         return <>
@@ -22,18 +38,24 @@ function LoginPage(){
                         {
                             users.map(user =>{
                                 return (
-                                    <li>
-                                    <button className="user-selection">
-                                    <img
-                                        className="avatar"
-                                        width="50"
-                                        height="50"
-                                        src={`https://robohash.org/${user.id}`}
-                                        alt=""
-                                    />
-                                    <h3>{user.firstName + " " + user.lastName} </h3>
-                                    </button>
-                                </li>
+                                        <li key={user.id}>
+                                        <button 
+                                            className="user-selection"
+                                            onClick={()=>{
+                                                setLoggedInUser(user)
+                                                navigate('/logged-in')
+                                            }}
+
+                                        ><img
+                                            className="avatar"
+                                            width="50"
+                                            height="50"
+                                            src={`https://robohash.org/${user.id}`}
+                                            alt=""
+                                        />
+                                        <h3>{user.firstName + " " + user.lastName} </h3>
+                                        </button>
+                                    </li>
                                 )
 
                             })
