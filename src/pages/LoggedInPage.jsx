@@ -9,8 +9,9 @@ function LoggedInPage(){
         firstName: "",
         lastName: "",
         id: "",
-
     })
+    
+    const [conversations, setConversations] = useState([])
 
 
     const [conversation, setConversation] = useState([])
@@ -30,7 +31,14 @@ function LoggedInPage(){
             .then(user => {
                 setLoggedInUser(user.user)
             })
-        
+            
+        fetch('http://localhost:4000/conversations')
+        .then(resp => resp.json())
+            .then(conversations => {
+                setConversations(conversations)
+            })
+            
+            
         if(params.conversationId){
             // Fetchinngg
         }

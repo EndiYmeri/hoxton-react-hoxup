@@ -31,14 +31,26 @@
   ],
   "loggedInUser": {
     "user": {
-      "firstName": "Geri",
-      "lastName": "Cupi",
-      "phoneNumber": "123123123123",
-      "avatar": "https://avatars.dicebear.com/api/avataaars/GeriCupi.svg",
-      "id": 2
+      "firstName": "Ed",
+      "lastName": "Putans",
+      "phoneNumber": "12341234",
+      "avatar": "https://avatars.dicebear.com/api/avataaars/EdPutans.svg",
+      "id": 1
     }
   },
   "messages": [
+    {
+      "userId": 6,
+      "messageText": "Hello! 👋 ",
+      "conversationId": 1,
+      "id": 1
+    },
+    {
+      "userId": 6,
+      "messageText": "Hello! 👋 ",
+      "conversationId": 1,
+      "id": 1
+    },
     {
       "userId": 6,
       "messageText": "Hello! 👋 ",
@@ -48,7 +60,17 @@
   ],
   "conversations": [
     {
-      "userId": 6,
+      "userId": 1,
+      "participantId": 13,
+      "id": 1
+    },
+    {
+      "userId": 1,
+      "participantId": 13,
+      "id": 1
+    },
+    {
+      "userId": 1,
       "participantId": 13,
       "id": 1
     }
