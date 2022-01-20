@@ -1,102 +1,117 @@
 {
-    "users": [{
-            "firstName": "Ed",
-            "lastName": "Putans",
-            "phoneNumber": "12341234",
-            "avatar": "https://avatars.dicebear.com/api/avataaars/EdPutans.svg",
-            "id": 1
-        },
-        {
-            "firstName": "Geri",
-            "lastName": "Cupi",
-            "phoneNumber": "123123123123",
-            "avatar": "https://avatars.dicebear.com/api/avataaars/GeriCupi.svg",
-            "id": 2
-        },
-        {
-            "firstName": "Luca",
-            "lastName": "Marcora",
-            "phoneNumber": "123123123",
-            "avatar": "https://avatars.dicebear.com/api/avataaars/LucaMarcora.svg",
-            "id": 3
-        },
-        {
-            "firstName": "Nicolas",
-            "lastName": "Marcora",
-            "phoneNumber": "+696969696969",
-            "avatar": "https://avatars.dicebear.com/api/avataaars/NicolasMarcora.svg",
-            "id": 4
-        }
-    ],
-    "messages": [{
-            "userId": 2,
-            "messageText": "Hello! 👋 ",
-            "conversationId": 1,
-            "id": 1
-        },
-        {
-            "userId": 1,
-            "messageText": "Hello! 👋 ",
-            "conversationId": 1,
-            "id": 2
-        },
-        {
-            "userId": 2,
-            "messageText": "Hello! 👋 ",
-            "conversationId": 1,
-            "id": 3
-        },
-        {
-            "conversationId": 1,
-            "userId": 1,
-            "messageText": "Hello teheere",
-            "id": 4
-        },
-        {
-            "conversationId": 1,
-            "userId": 2,
-            "messageText": "Hello there",
-            "id": 5
-        },
-        {
-            "conversationId": 1,
-            "userId": 1,
-            "messageText": "Hello geri",
-            "id": 6
-        },
-        {
-            "conversationId": 1,
-            "userId": 2,
-            "messageText": "Hello ed",
-            "id": 7
-        },
-        {
-            "conversationId": 1,
-            "userId": 1,
-            "messageText": "Hello agaiin",
-            "id": 8
-        },
-        {
-            "conversationId": 1,
-            "userId": 2,
-            "messageText": "Yea again",
-            "id": 9
-        }
-    ],
-    "conversations": [{
-            "userId": 1,
-            "participantId": 2,
-            "id": 1
-        },
-        {
-            "userId": 1,
-            "participantId": 4,
-            "id": 2
-        },
-        {
-            "userId": 1,
-            "participantId": 3,
-            "id": 3
-        }
-    ]
+  "users": [
+    {
+      "firstName": "Ed",
+      "lastName": "Putans",
+      "phoneNumber": "12341234",
+      "avatar": "https://avatars.dicebear.com/api/avataaars/EdPutans.svg",
+      "id": 1
+    },
+    {
+      "firstName": "Geri",
+      "lastName": "Cupi",
+      "phoneNumber": "123123123123",
+      "avatar": "https://avatars.dicebear.com/api/avataaars/GeriCupi.svg",
+      "id": 2
+    },
+    {
+      "firstName": "Luca",
+      "lastName": "Marcora",
+      "phoneNumber": "123123123",
+      "avatar": "https://avatars.dicebear.com/api/avataaars/LucaMarcora.svg",
+      "id": 3
+    },
+    {
+      "firstName": "Nicolas",
+      "lastName": "Marcora",
+      "phoneNumber": "+696969696969",
+      "avatar": "https://avatars.dicebear.com/api/avataaars/NicolasMarcora.svg",
+      "id": 4
+    },
+    {
+      "firstName": "Endi",
+      "lastName": "Ymeri",
+      "phoneNumber": "067 241 8595",
+      "id": 5
+    },
+    {
+      "firstName": "Not",
+      "lastName": "Endi",
+      "phoneNumber": "067 241 8595",
+      "id": 6
+    }
+  ],
+  "messages": [
+    {
+      "userId": 2,
+      "messageText": "Hello! 👋 ",
+      "conversationId": 1,
+      "id": 1
+    },
+    {
+      "userId": 1,
+      "messageText": "Hello! 👋 ",
+      "conversationId": 1,
+      "id": 2
+    },
+    {
+      "userId": 2,
+      "messageText": "Hello! 👋 ",
+      "conversationId": 1,
+      "id": 3
+    },
+    {
+      "conversationId": 1,
+      "userId": 1,
+      "messageText": "Hello teheere",
+      "id": 4
+    },
+    {
+      "conversationId": 1,
+      "userId": 2,
+      "messageText": "Hello there",
+      "id": 5
+    },
+    {
+      "conversationId": 1,
+      "userId": 1,
+      "messageText": "Hello geri",
+      "id": 6
+    },
+    {
+      "conversationId": 1,
+      "userId": 2,
+      "messageText": "Hello ed",
+      "id": 7
+    },
+    {
+      "conversationId": 1,
+      "userId": 1,
+      "messageText": "Hello agaiin",
+      "id": 8
+    },
+    {
+      "conversationId": 1,
+      "userId": 2,
+      "messageText": "Yea again",
+      "id": 9
+    }
+  ],
+  "conversations": [
+    {
+      "userId": 1,
+      "participantId": 2,
+      "id": 1
+    },
+    {
+      "userId": 1,
+      "participantId": 4,
+      "id": 2
+    },
+    {
+      "userId": 1,
+      "participantId": 3,
+      "id": 3
+    }
+  ]
 }

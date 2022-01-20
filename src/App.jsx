@@ -20,15 +20,23 @@ export default function App() {
       },[])
 
   const navigate = useNavigate()
-
+  
   function logIn (user) {
+    localStorage.setItem("user",JSON.stringify(user))
     // set user in state as the current user
     setCurrentUser(user)
     // navigate to the main page
+
+
     navigate('/logged-in')
   }
+  useEffect(()=>{
+    const user = JSON.parse(localStorage.getItem("user"))
+    if(user) logIn(user)
+  },[])
 
   function logOut () {
+    localStorage.removeItem("user")
     setCurrentUser(null)
   }
 
