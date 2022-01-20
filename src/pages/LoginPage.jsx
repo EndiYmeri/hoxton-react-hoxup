@@ -1,32 +1,8 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-function LoginPage(){
+function LoginPage({users, logIn}){
 
-    const [users, setUsers] = useState([])
-
-    useEffect(()=>{
-        fetch("http://localhost:4000/users")
-            .then(resp=> resp.json())
-                .then(users => setUsers(users))
-
-        },[])
-
-    function setLoggedInUser(userInfo){
-        fetch("http://localhost:4000/loggedInUser",{
-            method:"PATCH",
-            headers:{
-                "content-type": "application/json"
-            },
-            body: JSON.stringify({
-                user: userInfo
-            })
-        })
-    }
-
-    const navigate = useNavigate()
-
-    
     if(users){
         return <>
             <div className="main-wrapper login">
@@ -42,8 +18,7 @@ function LoginPage(){
                                         <button 
                                             className="user-selection"
                                             onClick={()=>{
-                                                setLoggedInUser(user)
-                                                navigate('/logged-in')
+                                                logIn(user)
                                             }}
 
                                         ><img

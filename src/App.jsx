@@ -1,16 +1,44 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
 import LoggedInPage from "./pages/LoggedInPage";
 import LoginPage from "./pages/LoginPage";
 
 export default function App() {
+
+  const [users, setUsers] = useState([])
+
+  const [currentUser, setCurrentUser] = useState(null)
+
+  
+
+  useEffect(()=>{
+      fetch("http://localhost:4000/users")
+          .then(resp=> resp.json())
+              .then(users => setUsers(users))
+
+      },[])
+
+  const navigate = useNavigate()
+
+  function logIn (user) {
+    // set user in state as the current user
+    setCurrentUser(user)
+    // navigate to the main page
+    navigate('/logged-in')
+  }
+
+  function logOut () {
+    setCurrentUser(null)
+  }
+
   return (
     <div className="app">
       <Routes>
         <Route index element={<Navigate replace to='/login'/>} />
-        <Route path="/login" element={<LoginPage/>} />      
-        <Route path="/logged-in" element={<LoggedInPage/>} />      
-        <Route path="/logged-in/:conversationId" element={<LoggedInPage/>} />      
+        <Route path="/login" element={<LoginPage users={users} logIn={logIn} />} />      
+        <Route path="/logged-in" element={<LoggedInPage users={users} currentUser = {currentUser} logOut={logOut}/>} />      
+        <Route path="/logged-in/:conversationId" element={<LoggedInPage users={users} currentUser = {currentUser} logOut={logOut} />} />      
         <Route path="*" element={<ErrorPage/>}/>
       </Routes>
     </div>

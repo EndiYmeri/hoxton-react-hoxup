@@ -3,48 +3,36 @@ import { useNavigate, useParams } from "react-router-dom"
 
 
 
-function LoggedInPage(){
-    
-    const [loggedInUser, setLoggedInUser] = useState({
-        firstName: "",
-        lastName: "",
-        id: "",
-    })
-    
+function LoggedInPage({users, currentUser, logOut}){
+    const [currentConversation, setCurrentConversation] = useState(null)
     const [conversations, setConversations] = useState([])
-
-
-    const [conversation, setConversation] = useState([])
-
-
-    // if User not signed in redirect to login page
+    const params = useParams()
     const navigate = useNavigate()
-    useEffect(()=>{
-        
-        // navigate('/')
-    },[])
-    
-    
-    useEffect(()=>{
-        fetch('http://localhost:4000/loggedInUser')
-        .then(resp => resp.json())
-            .then(user => {
-                setLoggedInUser(user.user)
-            })
-            
-        fetch('http://localhost:4000/conversations')
-        .then(resp => resp.json())
-            .then(conversations => {
-                setConversations(conversations)
-            })
-            
-            
-        if(params.conversationId){
-            // Fetchinngg
-        }
-    },[])
 
-    let params = useParams()
+    useEffect(() => {
+        if (currentUser === null) navigate('/')
+        }, [currentUser, navigate])
+
+    useEffect(() => {
+        if (params.conversationId) {
+        fetch(
+            `http://localhost:4000/conversations/${params.conversationId}?_embed=messages`
+        )
+            .then(resp => resp.json())
+            .then(conversation => setCurrentConversation(conversation))
+        }
+    }, [params.conversationId])
+
+    useEffect(() => {
+        if (currentUser === null) return
+
+        fetch(`http://localhost:4000/conversations?userId=${currentUser.id}`)
+        .then(resp => resp.json())
+        .then(conversations => setConversations(conversations))
+    }, [currentUser])
+
+    if (currentUser === null) return <h1>Not signed in...</h1>
+
     return <>
         <div className="main-wrapper">
                     {/* <!-- Side Panel --> */}
@@ -55,10 +43,17 @@ function LoggedInPage(){
                         className="avatar"
                         width="50"
                         height="50"
-                        src={`https://robohash.org/${loggedInUser.id}`}
+                        // @ts-ignore
+                        src={`https://robohash.org/${currentUser.id}`}
                         alt=""
                     />
-                    <h3>{loggedInUser.firstName + " " + loggedInUser.lastName}</h3>
+                    <h3>{
+// @ts-ignore
+                    currentUser.firstName + " " + currentUser.lastName}</h3>
+                    <button onClick={()=>{
+                        logOut()
+                    }}>Log Out</button>
+
                 </header>
 
                 {/* <!-- Search form --> */}
@@ -77,36 +72,41 @@ function LoggedInPage(){
                         <div><h3>+ Start a new Chat</h3></div>
                         </button>
                     </li>
-                    <li>
-                        <button className="chat-button">
-                        <img
-                            className="avatar"
-                            height="50"
-                            width="50"
-                            alt=""
-                            src="https://robohash.org/2"
-                        />
-                        <div>
-                            <h3>Tin Man</h3>
-                            <p>Last message</p>
-                        </div>
-                        </button>
-                    </li>
-                    <li>
-                        <button className="chat-button">
-                        <img
-                            className="avatar"
-                            height="50"
-                            width="50"
-                            alt=""
-                            src="https://robohash.org/3"
-                        />
-                        <div>
-                            <h3>Carl T-800</h3>
-                            <p>Last message</p>
-                        </div>
-                        </button>
-                    </li>
+                        {conversations.map(conversation => {
+                            // which id am I talking to
+                            const talkingToId =
+                            currentUser.id === conversation.userId
+                                ? conversation.participantId
+                                : conversation.userId
+                            
+                            // what are their details?
+                            const participant = users.find(user => user.id === talkingToId)
+                            console.log(participant);
+                        
+                            
+                            return (
+                            <li  key={conversation.id}>
+                                <button
+                                className='chat-button'
+                                onClick={() => navigate(`/logged-in/${conversation.id}`)}
+                                >
+                                <img
+                                    className='avatar'
+                                    height='50'
+                                    width='50'
+                                    alt=''
+                                    src={`https://robohash.org/${talkingToId}`}
+                                />
+                                <div>
+                                    <h3>
+                                    {/* {talkingToUser.firstName} {talkingToUser.lastName} */}
+                                    </h3>
+                                    <p>Last message</p>
+                                </div>
+                                </button>
+                            </li>
+                            )
+                        })}
                 </ul>
 
             </aside>
