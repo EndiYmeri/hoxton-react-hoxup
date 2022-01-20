@@ -4,13 +4,11 @@ import LoginPage from "./pages/LoginPage";
 
 export default function App() {
   return (
-    <div className="main-wrapper login">
+    <div className="app">
       <Routes>
         <Route path="/login" element={<LoginPage/>}></Route>      
         <Route path="/logged-in" element={<LoggedInPage/>}></Route>      
       </Routes>
-
-
     </div>
   )
   

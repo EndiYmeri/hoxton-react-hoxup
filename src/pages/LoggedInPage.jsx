@@ -1,5 +1,6 @@
 function LoggedInPage(){
     return <>
+        <div className="main-wrapper">
                     {/* <!-- Side Panel --> */}
             <aside>
                 {/* <!-- Side Header --> */}
@@ -69,6 +70,7 @@ function LoggedInPage(){
                 </form>
                 </footer>
             </main>
+        </div>
     </>
 }
 
