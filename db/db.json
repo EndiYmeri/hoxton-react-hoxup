@@ -28,45 +28,74 @@
             "id": 4
         }
     ],
-    "loggedInUser": {
-        "user": {
-            "id": null,
-            "firstName": "",
-            "lastName": ""
-        }
-    },
     "messages": [{
-            "userId": 6,
+            "userId": 2,
             "messageText": "Hello! 👋 ",
             "conversationId": 1,
             "id": 1
         },
         {
-            "userId": 6,
+            "userId": 1,
             "messageText": "Hello! 👋 ",
             "conversationId": 1,
             "id": 2
         },
         {
-            "userId": 6,
+            "userId": 2,
             "messageText": "Hello! 👋 ",
             "conversationId": 1,
             "id": 3
+        },
+        {
+            "conversationId": 1,
+            "userId": 1,
+            "messageText": "Hello teheere",
+            "id": 4
+        },
+        {
+            "conversationId": 1,
+            "userId": 2,
+            "messageText": "Hello there",
+            "id": 5
+        },
+        {
+            "conversationId": 1,
+            "userId": 1,
+            "messageText": "Hello geri",
+            "id": 6
+        },
+        {
+            "conversationId": 1,
+            "userId": 2,
+            "messageText": "Hello ed",
+            "id": 7
+        },
+        {
+            "conversationId": 1,
+            "userId": 1,
+            "messageText": "Hello agaiin",
+            "id": 8
+        },
+        {
+            "conversationId": 1,
+            "userId": 2,
+            "messageText": "Yea again",
+            "id": 9
         }
     ],
     "conversations": [{
             "userId": 1,
-            "participantId": 13,
+            "participantId": 2,
             "id": 1
         },
         {
             "userId": 1,
-            "participantId": 13,
+            "participantId": 4,
             "id": 2
         },
         {
             "userId": 1,
-            "participantId": 13,
+            "participantId": 3,
             "id": 3
         }
     ]

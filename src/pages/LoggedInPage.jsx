@@ -1,10 +1,15 @@
+// @ts-nocheck
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from "react/cjs/react.production.min"
+import AvatarImage from "../components/AvatarImage"
+import ConversationItem from "../components/ConversationItem"
+import H3ButtonTitle from "../components/H3ButtonTitle"
 
 
 
 function LoggedInPage({users, currentUser, logOut}){
-    const [currentConversation, setCurrentConversation] = useState(null)
+    const [currentConversation, setCurrentConversation] = useState([])
     const [conversations, setConversations] = useState([])
     const params = useParams()
     const navigate = useNavigate()
@@ -13,23 +18,41 @@ function LoggedInPage({users, currentUser, logOut}){
         if (currentUser === null) navigate('/')
         }, [currentUser, navigate])
 
+
+    // Get Current conversation after we select the conversation
     useEffect(() => {
         if (params.conversationId) {
         fetch(
-            `http://localhost:4000/conversations/${params.conversationId}?_embed=messages`
+            `http://localhost:4000/messages?conversationId=${params.conversationId}`
         )
             .then(resp => resp.json())
             .then(conversation => setCurrentConversation(conversation))
         }
     }, [params.conversationId])
 
+
     useEffect(() => {
         if (currentUser === null) return
-
         fetch(`http://localhost:4000/conversations?userId=${currentUser.id}`)
         .then(resp => resp.json())
         .then(conversations => setConversations(conversations))
     }, [currentUser])
+
+
+    // Creating a new message
+    function addNewMessage(text){
+        fetch('http://localhost:4000/messages',{
+            method: "POST",
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                conversationId: Number(params.conversationId),
+                userId: currentUser.id,
+                messageText: text
+            })
+        }).then(resp=> resp.json()).then(message => setCurrentConversation([...currentConversation, message]))
+    }
 
     if (currentUser === null) return <h1>Not signed in...</h1>
 
@@ -39,17 +62,8 @@ function LoggedInPage({users, currentUser, logOut}){
             <aside>
                 {/* <!-- Side Header --> */}
                 <header className="panel">
-                    <img
-                        className="avatar"
-                        width="50"
-                        height="50"
-                        // @ts-ignore
-                        src={`https://robohash.org/${currentUser.id}`}
-                        alt=""
-                    />
-                    <h3>{
-// @ts-ignore
-                    currentUser.firstName + " " + currentUser.lastName}</h3>
+                    <AvatarImage userId={currentUser.id} />
+                    <H3ButtonTitle title={currentUser.firstName + " " + currentUser.lastName} />
                     <button onClick={()=>{
                         logOut()
                     }}>Log Out</button>
@@ -69,7 +83,9 @@ function LoggedInPage({users, currentUser, logOut}){
                 {/* <!-- This first item should always be present --> */}
                     <li>
                         <button className="chat-button">
-                        <div><h3>+ Start a new Chat</h3></div>
+                            <div>
+                                <H3ButtonTitle title={"+ Start a new Chat"}/>
+                            </div>
                         </button>
                     </li>
                         {conversations.map(conversation => {
@@ -81,30 +97,13 @@ function LoggedInPage({users, currentUser, logOut}){
                             
                             // what are their details?
                             const participant = users.find(user => user.id === talkingToId)
-                            console.log(participant);
-                        
-                            
                             return (
-                            <li  key={conversation.id}>
-                                <button
-                                className='chat-button'
-                                onClick={() => navigate(`/logged-in/${conversation.id}`)}
-                                >
-                                <img
-                                    className='avatar'
-                                    height='50'
-                                    width='50'
-                                    alt=''
-                                    src={`https://robohash.org/${talkingToId}`}
-                                />
-                                <div>
-                                    <h3>
-                                    {/* {talkingToUser.firstName} {talkingToUser.lastName} */}
-                                    </h3>
-                                    <p>Last message</p>
-                                </div>
-                                </button>
-                            </li>
+                            <ConversationItem 
+                                conversation={conversation} 
+                                talkingToId={talkingToId} 
+                                navigate={navigate}
+                                participant={participant} 
+                            />
                             )
                         })}
                 </ul>
@@ -122,19 +121,38 @@ function LoggedInPage({users, currentUser, logOut}){
                  The Messages List will go here. Check main-messages-list.html
                  --> */}
                  <ul className="conversation__messages">
- 
- 
+                 {  
+                    // console.log(currentConversation.messages)
+                     currentConversation.map(message => {
+                         return (
+                            <li 
+                                key={message.id}
+                                className={message.userId === currentUser.id ? "outgoing" : ""}>
+                            <p>
+                              {message.messageText}
+                            </p>
+                          </li>
+                         )
+                     })
+                 }
+                 
                  </ul>
  
                  {/* <!-- Message Box --> */}
                  <footer>
-                 <form className="panel conversation__message-box">
+                 <form className="panel conversation__message-box"
+                    onSubmit={(e)=>{
+                        e.preventDefault()
+                        addNewMessage(e.target.messageText.value)
+                        e.target.reset()
+                    }}
+                 >
                      <input
                      type="text"
                      placeholder="Type a message"
                      // @ts-ignore
                      rows="1"
-                     value=""
+                     name="messageText"
                      /><button type="submit">
                      {/* <!-- This is the send button --> */}
                      <svg
