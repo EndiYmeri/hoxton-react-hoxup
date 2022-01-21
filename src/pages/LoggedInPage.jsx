@@ -8,7 +8,7 @@ import H3ButtonTitle from "../components/H3ButtonTitle"
 
 
 
-function LoggedInPage({users, currentUser, logOut}){
+function LoggedInPage({users, currentUser, logOut, modal ,setModal}){
     const [currentConversation, setCurrentConversation] = useState([])
     const [conversations, setConversations] = useState([])
     const params = useParams()
@@ -17,7 +17,6 @@ function LoggedInPage({users, currentUser, logOut}){
     useEffect(() => {
         if (currentUser === null) navigate('/')
         }, [currentUser, navigate])
-
 
     // Get Current conversation after we select the conversation
     useEffect(() => {
@@ -39,6 +38,24 @@ function LoggedInPage({users, currentUser, logOut}){
     }, [currentUser])
 
 
+    function startNewChat(participant){
+        fetch(`http://localhost:4000/conversations?userId=${currentUser.id}`,{
+            method:"POST",
+            headers:{
+                "content-type":"application/json",
+            },
+            body:JSON.stringify({
+                userId: currentUser.id,
+                participantId: participant.id
+            })
+        }).then(resp=> resp.json()).then(conversation => {
+            setConversations([...conversations,conversation])
+            setModal(false)
+            navigate(`/logged-in/${conversation.id}`)
+        })
+    }
+
+
     // Creating a new message
     function addNewMessage(text){
         fetch('http://localhost:4000/messages',{
@@ -53,6 +70,16 @@ function LoggedInPage({users, currentUser, logOut}){
             })
         }).then(resp=> resp.json()).then(message => setCurrentConversation([...currentConversation, message]))
     }
+
+    // Getting users that participated in convos
+    let usersThatParticipatedInConvos = conversations.map(conversation => conversation.participantId)
+    // Getting users that started the convos
+    let usersThatStartedTheConvos = conversations.map(conversation => conversation.userId)
+    console.log("Users that participated in convos:", usersThatParticipatedInConvos)
+    console.log("Users that started the convos:", usersThatStartedTheConvos)
+
+    
+    const usersNotTalkedTo = users.filter((user)=>!usersThatParticipatedInConvos.includes(user.id) && !usersThatStartedTheConvos.includes(user.id) && user.id !== currentUser) 
 
     if (currentUser === null) return <h1>Not signed in...</h1>
 
@@ -82,11 +109,45 @@ function LoggedInPage({users, currentUser, logOut}){
                 <ul>
                 {/* <!-- This first item should always be present --> */}
                     <li>
-                        <button className="chat-button">
+                        <button 
+                            onClick={()=>{
+                                setModal(true)
+                            }}
+                            className="chat-button">
                             <div>
                                 <H3ButtonTitle title={"+ Start a new Chat"}/>
                             </div>
                         </button>
+                        <div className={modal? "modal opened":"modal closed"}>
+                            <button
+                                onClick={()=>{
+                                    setModal(false)
+                                }} 
+                                className="close-button">X</button>
+                            <ul className="addUserModal">
+                                <H3ButtonTitle title={"Pick a user to talk to"}/>
+                                {
+                                 usersNotTalkedTo.map(user=>{
+                                     return(
+                                        <li  key={user.id}>
+                                        <button
+                                        className='chat-button'
+                                        onClick={() => {
+                                            startNewChat(user)
+                                        }}>
+                                            <AvatarImage userId={user.id} />
+                                            <div>
+                                                <h3>
+                                                {user.firstName} {user.lastName}
+                                                </h3>
+                                            </div>
+                                        </button> 
+                                    </li>
+                                     )
+                                 })   
+                                }
+                            </ul>
+                        </div>
                     </li>
                         {conversations.map(conversation => {
                             // which id am I talking to
@@ -102,7 +163,7 @@ function LoggedInPage({users, currentUser, logOut}){
                                 conversation={conversation} 
                                 talkingToId={talkingToId} 
                                 navigate={navigate}
-                                participant={participant} 
+                                participant={participant}
                             />
                             )
                         })}

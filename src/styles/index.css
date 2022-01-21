@@ -82,6 +82,26 @@ textarea:focus {
     box-shadow: var(--main-shadow);
 }
 
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    padding: 1rem 2rem;
+    border: 1px solid var(--borders);
+    background-color: var(--white);
+    box-shadow: 0px 0px 10px 10px rgba(var(--shadow-rgb), 0.10);
+}
+
+.modal.closed {
+    display: none;
+}
+
+.modal.opened {
+    display: block;
+}
+
 .main-wrapper.login {
     grid-template-columns: minmax(300px, 600px);
     place-content: center;

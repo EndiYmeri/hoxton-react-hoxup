@@ -7,10 +7,8 @@ import LoginPage from "./pages/LoginPage";
 export default function App() {
 
   const [users, setUsers] = useState([])
-
   const [currentUser, setCurrentUser] = useState(null)
-
-  
+  const [modal, setModal] = useState(false)
 
   useEffect(()=>{
       fetch("http://localhost:4000/users")
@@ -45,8 +43,8 @@ export default function App() {
       <Routes>
         <Route index element={<Navigate replace to='/login'/>} />
         <Route path="/login" element={<LoginPage users={users} logIn={logIn} />} />      
-        <Route path="/logged-in" element={<LoggedInPage users={users} currentUser = {currentUser} logOut={logOut}/>} />      
-        <Route path="/logged-in/:conversationId" element={<LoggedInPage users={users} currentUser = {currentUser} logOut={logOut} />} />      
+        <Route path="/logged-in" element={<LoggedInPage users={users} currentUser = {currentUser} logOut={logOut} modal={modal} setModal={setModal} />} />      
+        <Route path="/logged-in/:conversationId" element={<LoggedInPage users={users} currentUser = {currentUser} logOut={logOut} modal={modal} setModal={setModal} />} />      
         <Route path="*" element={<ErrorPage/>}/>
       </Routes>
     </div>
